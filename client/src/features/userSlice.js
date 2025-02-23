@@ -11,7 +11,7 @@ const initialState = {
 
 // Fetch User Profile
 export const fetchUser = createAsyncThunk("user/fetchUser", async (userId, token) => {
-    const userProfile = await fetch(`http://localhost:5000/user/fetch-user/${userId}`, {
+    const userProfile = await fetch(`https://onebox-email.vercel.app/user/fetch-user/${userId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Header keys should be quoted, not the object itself

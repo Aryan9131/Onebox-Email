@@ -10,7 +10,7 @@ export const Rehydrate = ({ children }) => {
   useEffect(() => {
     if (token) {
       const fetchUser = async () => {
-        const fetchedUserResponse = await fetch('http://localhost:5000/user/get-user', {
+        const fetchedUserResponse = await fetch('https://onebox-email.vercel.app/user/get-user', {
           method: "GET",
           headers: {
             'content-type': 'application/json',

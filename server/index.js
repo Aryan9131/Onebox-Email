@@ -7,6 +7,7 @@ const db = require('./config/mongoose.js');
 // Enable CORS
 const corsOptions = {
   origin: [
+    'https://onebox-email.onrender.com/',
     'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

@@ -3,8 +3,8 @@ const { Client } = require("@elastic/elasticsearch");
 const esClient = new Client({ 
   node: "http://localhost:9200",
   auth: {
-    username: 'elastic',
-    password: 'Aryan@9131'
+    username: process.env.ELASTICSEARCH_PASSWORD,
+    password: process.env.ELASTICSEARCH_USERNAME
   }
 });
 
