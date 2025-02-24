@@ -15,7 +15,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     const fetchEmails = async () => {
-      const response = await fetch('http://localhost:5000/emails');
+      const response = await fetch(`${import.meta.env.VITE_BURL}/emails`);
       const data = await response.json();
       setEmails(data);
       setFilteredEmails(data);
@@ -27,8 +27,30 @@ export const HomePage = () => {
   }, []);
 
   const handleFilter = () => {
-   
+    let filteredData = emails;
+  
+    // Filter by status
+    if (statusFilter !== 'All') {
+      filteredData = filteredData.filter((eml) => eml._source.category === statusFilter);
+    }
+  
+    // Filter by date range
+    if (dateFilter.start || dateFilter.end) {
+      filteredData = filteredData.filter((eml) => {
+        const emailDate = new Date(eml._source.header.date);
+        const startDate = dateFilter.start ? new Date(dateFilter.start) : null;
+        const endDate = dateFilter.end ? new Date(dateFilter.end) : null;
+  
+        return (
+          (!startDate || emailDate >= startDate) &&
+          (!endDate || emailDate <= endDate)
+        );
+      });
+    }
+  
+    setFilteredEmails(filteredData);
   };
+  
  
   useEffect(handleFilter, [statusFilter, dateFilter]);
 
@@ -58,12 +80,12 @@ export const HomePage = () => {
             style={{ marginRight: '16px', color: isLightMode ? 'black' : 'white' }}
             size='small'
           >
-            <MenuItem value="ALL">All</MenuItem>
+            <MenuItem value="All">All</MenuItem>
             <MenuItem value="Interested">Interested</MenuItem>
-            <MenuItem value="NotInterested">Not Interested</MenuItem>
+            <MenuItem value="Not Interested">Not Interested</MenuItem>
             <MenuItem value="Meeting">Meeting Booked</MenuItem>
             <MenuItem value="Spam">Spam</MenuItem>
-            <MenuItem value="OutOfOffice">Out of Office</MenuItem>
+            <MenuItem value="Unknown">Out of Office</MenuItem>
           </TextField>
           <TextField
             type="date"
@@ -122,7 +144,7 @@ export const HomePage = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {emails.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((email, index) => (
+          {filteredEmails.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((email, index) => (
             <TableRow key={index}>
               <TableCell sx={{ color: isLightMode ? 'black' : 'whitesmoke' }}>{index + 1}.</TableCell>
               <TableCell sx={{ fontSize: '13px', color: isLightMode ? 'black' : 'whitesmoke' }}>{email._source.header.subject}</TableCell>

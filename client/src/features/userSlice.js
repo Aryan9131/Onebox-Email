@@ -5,13 +5,14 @@ const initialState = {
     searchQuery: "",
     userDetails: null,
     isLightMode: true,
+    emails:[],
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
 };
 
 // Fetch User Profile
 export const fetchUser = createAsyncThunk("user/fetchUser", async (userId, token) => {
-    const userProfile = await fetch(`https://onebox-email.vercel.app/user/fetch-user/${userId}`, {
+    const userProfile = await fetch(`${import.meta.env.VITE_BURL}/user/fetch-user/${userId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Header keys should be quoted, not the object itself
@@ -21,19 +22,15 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async (userId, token
     return userProfile;
 });
 
-// Async thunk for fetching all users
-// export const getAllServices = createAsyncThunk(`admin/getAllServices`, async () => {
-//     const services = await fetchAllServices(); // Fetch all users from Firestore
-//     return services;
-// });
-
-
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
         setUser: (state, action) => {
             state.userDetails = action.payload;
+        },
+        setEmails: (state, action) => {
+            state.emails = action.payload;
         },
         clearUser: (state) => {
             state.userDetails = null;

@@ -7,8 +7,8 @@ const { triggerWebhook } = require("./webhookService");
 const esClient = new Client({ 
   node: "http://localhost:9200" ,
   auth: {
-    username: process.env.ELASTICSEARCH_PASSWORD,
-    password: process.env.ELASTICSEARCH_USERNAME
+    username: process.env.ELASTICSEARCH_USERNAME,
+    password: process.env.ELASTICSEARCH_PASSWORD
   }
 });
 
@@ -52,14 +52,12 @@ async function indexEmail(email) {
     document: { ...email, header: { subject, date } }, // Store values
   })
 
-  //Trigger Slack Notification & Webhook if category is "Interested"
+  // Trigger Slack Notification & Webhook if category is "Interested"
   if (category === "Interested") {
     await sendSlackNotification(email, category);
     await triggerWebhook(email, category);
   }
 }
-
-
 
 // Function to search for emails with category filter
 async function searchEmails(query, category = null) {

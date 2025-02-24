@@ -3,8 +3,8 @@ const { Client } = require("@elastic/elasticsearch");
 const esClient = new Client({ 
   node: "http://localhost:9200",
   auth: {
-    username: process.env.ELASTICSEARCH_PASSWORD,
-    password: process.env.ELASTICSEARCH_USERNAME
+    username: process.env.ELASTICSEARCH_USERNAME,
+    password: process.env.ELASTICSEARCH_PASSWORD
   }
 });
 
@@ -16,7 +16,6 @@ async function fetchAllEmailsFromES() {
       let result=[];
       const response = await esClient.search({
         index: indexName,
-        size: 50, // Fetch up to 10 emails
         query: { match_all: {} } // Fetch all emails
       });
   

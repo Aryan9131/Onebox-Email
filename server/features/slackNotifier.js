@@ -5,7 +5,7 @@ const slack = new WebClient(process.env.SLACK_TOKEN);
 
 async function sendSlackNotification(email, category) {
     try {
-        const message = `📩 *New Email Categorized as:* ${category}\n📝 *From:* ${email.from}\n💬 *Message:* ${email.body.substring(0, 100)}...`;
+        const message = ` *New Email Categorized as:* ${category}\n  *From:* ${email.header.subject}`;
         
         await slack.chat.postMessage({
             channel: process.env.SLACK_CHANNEL_ID,

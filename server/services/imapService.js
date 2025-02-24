@@ -28,7 +28,7 @@ const fetchEmails = (callback) => {
     console.log("INBOX Opened:", box.messages.total);
 
     const sinceDate = new Date();
-    sinceDate.setDate(sinceDate.getDate() - 1); // Fetch last 30 days
+    sinceDate.setDate(sinceDate.getDate() - 30); // Fetch last 30 days
 
     const searchCriteria = [["SINCE", sinceDate.toISOString().split("T")[0]]];
     const fetchOptions = { bodies: ["HEADER.FIELDS (FROM TO SUBJECT DATE)"], struct: true };
@@ -43,9 +43,6 @@ const fetchEmails = (callback) => {
         {
           return callback(null, []);
         }
-
-      // Fetch only the last 100 emails
-      results = results.slice(-100);
 
       const f = imap.fetch(results, fetchOptions);
       let emails = [];
